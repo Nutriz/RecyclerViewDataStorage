@@ -65,7 +65,14 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_clear) {
+            people.clear();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    peopleAdapter.notifyDataSetChanged();
+                }
+            });
             return true;
         }
 
