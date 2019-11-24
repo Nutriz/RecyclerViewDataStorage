@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                people.add(new People("New people by Fab"));
+                notifyDataChangedOnUiThread();
             }
         });
     }
@@ -67,15 +67,19 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_clear) {
             people.clear();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    peopleAdapter.notifyDataSetChanged();
-                }
-            });
+            notifyDataChangedOnUiThread();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void notifyDataChangedOnUiThread() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                peopleAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }
