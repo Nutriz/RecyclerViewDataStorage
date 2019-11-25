@@ -3,10 +3,10 @@ package fr.jgully.recyclerviewdatastorage;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,9 +17,11 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import fr.jgully.recyclerviewdatastorage.NewPeopleDialogFragment.OnNewPeopleCreated;
 
-    private List<People> people = new ArrayList<>();
+public class MainActivity extends AppCompatActivity implements OnNewPeopleCreated {
+
+    private List<People> peoples = new ArrayList<>();
     private PeopleAdapter peopleAdapter;
 
     @Override
@@ -30,24 +32,42 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Add test data
-        for (int i = 0; i < 1000; i++) {
-            people.add(new People("Test " + i));
-        }
+        peoples.add(new People("People test "));
 
         // Setup RecyclerView
         RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        peopleAdapter = new PeopleAdapter(people);
+        peopleAdapter = new PeopleAdapter(peoples);
         recyclerView.setAdapter(peopleAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                people.add(new People("New people by Fab"));
-                notifyDataChangedOnUiThread();
+                showAlertDialog();
             }
         });
+    }
+
+    private void showAlertDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        NewPeopleDialogFragment alertDialog = NewPeopleDialogFragment.newInstance(peoples.size());
+        alertDialog.show(fm, "new_people_dialog_fragment");
+    }
+
+    private void notifyDataChangedOnUiThread() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                peopleAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void onCreated(People people) {
+        peoples.add(people);
+        notifyDataChangedOnUiThread();
     }
 
     @Override
@@ -66,20 +86,11 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_clear) {
-            people.clear();
+            peoples.clear();
             notifyDataChangedOnUiThread();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void notifyDataChangedOnUiThread() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                peopleAdapter.notifyDataSetChanged();
-            }
-        });
     }
 }

@@ -36,6 +36,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         return peoples.size();
     }
 
+
     class PeopleViewHolder extends RecyclerView.ViewHolder {
 
         public PeopleViewHolder(@NonNull View itemView) {
@@ -45,7 +46,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         public void bind(People people) {
             TextView titleTextView = itemView.findViewById(R.id.row_name);
             titleTextView.setText(people.getName());
+            TextView descriptionTextView = itemView.findViewById(R.id.row_description);
+            descriptionTextView.setText(people.getSex() + ", " + people.getAge() + "years, love android: " + people.isLoveAndroid());
         }
     }
-
 }

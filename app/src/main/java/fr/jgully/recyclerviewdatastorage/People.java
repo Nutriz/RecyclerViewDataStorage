@@ -1,17 +1,27 @@
 package fr.jgully.recyclerviewdatastorage;
 
-import java.util.Date;
+public class People {
 
-class People {
+    public enum Sex {
+        MALE,
+        FEMALE
+    }
 
     private String name;
     private int age;
-    private boolean sex;
-    private Date birthDate;
+    private Sex sex;
+    private boolean loveAndroid;
 
 
     public People(String name) {
         this.name = name;
+    }
+
+    public People(String name, int age, Sex sex, boolean loveAndroid) {
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+        this.loveAndroid = loveAndroid;
     }
 
     public String getName() {
@@ -30,19 +40,19 @@ class People {
         this.age = age;
     }
 
-    public boolean isSex() {
+    public Sex getSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public boolean isLoveAndroid() {
+        return loveAndroid;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setLoveAndroid(boolean loveAndroid) {
+        this.loveAndroid = loveAndroid;
     }
 }
